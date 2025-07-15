@@ -1,0 +1,83 @@
+import { css } from "@emotion/react";
+import { Theme } from "../../../system/styles/themes";
+
+export const headerStyles = (theme: Theme) => {
+  return {
+    headerContainer: css({
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      height: 64,
+      background: "transparent",
+      padding: "0 24px",
+      zIndex: 100,
+    }),
+    leftSection: css({
+      display: "flex",
+      alignItems: "center",
+      gap: 8,
+      minWidth: 0,
+    }),
+    menuButton: css({
+      background: theme.background,
+      borderRadius: "50%",
+      cursor: "pointer",
+      color: theme.text,
+      transition: "background 0.2s",
+      "&:hover": {
+        background: theme.background,
+      },
+    }),
+    logoLink: css({
+      display: "flex",
+      alignItems: "center",
+      textDecoration: "none",
+      color: theme.text,
+      marginLeft: 8,
+      gap: 8,
+    }),
+    logo: css({
+      width: 32,
+      height: 32,
+      marginRight: 4,
+    }),
+    title: css({
+      fontSize: 22,
+      fontWeight: 500,
+      fontFamily: theme.font.heading,
+      letterSpacing: 0,
+      color: theme.text,
+      userSelect: "none",
+    }),
+    centerSection: css({
+      display: "flex",
+      alignItems: "center",
+      gap: 16,
+      flex: 1,
+      justifyContent: "center",
+      minWidth: 0,
+    }),
+    rightSection: css({
+      display: "flex",
+      alignItems: "center",
+      gap: 8,
+      minWidth: 0,
+    }),
+    profileButton: css({
+      background: "none",
+      border: "none",
+      padding: 8,
+      borderRadius: "50%",
+      cursor: "pointer",
+      transition: "background 0.2s",
+      "&:hover": {
+        background: theme.mode === "dark" ? "#303134" : "#f1f3f4",
+      },
+      width: 40,
+      height: 40,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    }),
+  };
+};
