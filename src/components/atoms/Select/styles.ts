@@ -28,6 +28,8 @@ export const getSelectStyles = (theme: Theme) => ({
     boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
     marginTop: 4,
     minWidth: 120,
+    maxHeight: 300,
+    overflow: "scroll",
   }),
   item: css({
     padding: "8px 16px",

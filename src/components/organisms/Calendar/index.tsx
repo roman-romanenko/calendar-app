@@ -11,12 +11,16 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import DaysOfWeek from "../../molecules/DaysOfWeek";
 import DaysOfMonth from "../../molecules/DaysOfMonth";
 import { useCalendarStore } from "../../../system/store";
+import { useAppTheme } from "../../../system/helpers/hooks";
+import { calendarMenuStyles } from "./styles";
 // import { getEventsForDate } from "../../../system/helpers/helperFunctions";
 
 const CalendarMenu: React.FC = () => {
   const { events: allEvents, currentMonth: month } = useCalendarStore();
   const [currentMonth, setCurrentMonth] = useState(month);
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const theme = useAppTheme();
+  const styles = calendarMenuStyles(theme);
 
   useEffect(() => {
     setCurrentMonth(month);
@@ -53,21 +57,13 @@ const CalendarMenu: React.FC = () => {
   const renderEventInfo = () => {
     const selectedDateKey = format(selectedDate, "yyyy-MM-dd");
     return (
-      <div style={{ marginTop: 24 }}>
+      <div css={styles.eventsInfoContainer}>
         <h3>Events on {format(selectedDate, "PPP")}</h3>
         {allEvents[selectedDateKey].length === 0 ? (
           <div>No events</div>
         ) : (
           allEvents[selectedDateKey].map((event, idx) => (
-            <div
-              key={idx}
-              style={{
-                marginBottom: 8,
-                padding: 8,
-                background: "#f5f5f5",
-                borderRadius: 4,
-              }}
-            >
+            <div key={idx} css={styles.eventsInfoItem}>
               <strong>
                 {event.startTime} - {event.endTime}
               </strong>

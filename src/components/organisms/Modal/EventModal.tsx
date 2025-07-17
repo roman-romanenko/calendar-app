@@ -1,8 +1,9 @@
 import { format } from "date-fns";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useCalendarStore } from "../../../system/store";
 import { getEventModalStyles } from "./eventModalStyles";
 import { useAppTheme } from "../../../system/helpers/hooks";
+import Select from "../../atoms/Select";
 
 const EventModal = () => {
   const {
@@ -14,18 +15,45 @@ const EventModal = () => {
     deleteEvent,
   } = useCalendarStore();
 
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
+  const formatTime = (hour: number, minute: number) => {
+    const formattedHour = hour.toString().padStart(2, "0");
+    const formattedMinute = minute.toString().padStart(2, "0");
+    return `${formattedHour}:${formattedMinute}`;
+  };
+  const todayDay = new Date();
+  const hour = todayDay.getHours();
+  const minutes = todayDay.getMinutes();
+
+  const initialStartTime =
+    minutes > 30 ? formatTime(hour + 1, 0) : formatTime(hour, 30);
+  const initialEndTime =
+    minutes > 30 ? formatTime(hour + 1, 30) : formatTime(hour + 1, 0);
+  const [startTime, setStartTime] = useState(initialStartTime);
+  const [endTime, setEndTime] = useState(initialEndTime);
   const [comment, setComment] = useState("");
 
   const theme = useAppTheme();
   const styles = getEventModalStyles(theme);
 
+  const timeOptions = useMemo(() => {
+    const times: string[] = [];
+    for (let h = 0; h < 24; h++) {
+      for (let m = 0; m < 60; m += 30) {
+        times.push(formatTime(h, m));
+      }
+    }
+
+    return times.map((t) => ({
+      label: t,
+      value: t,
+    }));
+  }, []);
+
   useEffect(() => {
-    setStartTime(editingEvent?.startTime || "");
-    setEndTime(editingEvent?.endTime || "");
+    setStartTime(editingEvent?.startTime || initialStartTime);
+    setEndTime(editingEvent?.endTime || initialEndTime);
     setComment(editingEvent?.comment || "");
-  }, [editingEvent]);
+  }, [editingEvent, initialStartTime, initialEndTime]);
 
   if (!isModalOpen) return null;
 
@@ -44,49 +72,28 @@ const EventModal = () => {
     });
   };
 
-  const renderTimeOptions = () => {
-    const times: string[] = [];
-    for (let h = 0; h < 24; h++) {
-      for (let m = 0; m < 60; m += 30) {
-        const hour = h.toString().padStart(2, "0");
-        const minute = m.toString().padStart(2, "0");
-        times.push(`${hour}:${minute}`);
-      }
-    }
-    return times.map((t) => (
-      <option key={t} value={t}>
-        {t}
-      </option>
-    ));
-  };
-
   return (
     <div css={styles.backdrop}>
       <div css={styles.modal}>
         <h3>{format(selectedDate, "PPP")}</h3>
-
-        <label>
-          Start Time:
-          <select
-            value={startTime}
-            onChange={(e) => setStartTime(e.target.value)}
-            css={styles.input}
-          >
-            {renderTimeOptions()}
-          </select>
-        </label>
-
-        <label>
-          End Time:
-          <select
-            value={endTime}
-            onChange={(e) => setEndTime(e.target.value)}
-            css={styles.input}
-          >
-            {renderTimeOptions()}
-          </select>
-        </label>
-
+        Start Time:
+        <Select
+          options={timeOptions}
+          onChange={(timeOption) => setStartTime(timeOption.value)}
+          value={{
+            label: startTime,
+            value: startTime,
+          }}
+        />
+        End Time:
+        <Select
+          options={timeOptions}
+          onChange={(timeOption) => setEndTime(timeOption.value)}
+          value={{
+            label: endTime,
+            value: endTime,
+          }}
+        />
         <label>
           Comment:
           <textarea
@@ -95,7 +102,6 @@ const EventModal = () => {
             css={styles.textarea}
           />
         </label>
-
         <div css={styles.actions}>
           {editingEvent && (
             <button

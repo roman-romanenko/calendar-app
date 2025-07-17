@@ -27,6 +27,7 @@ export const getDayOfMonthStyles = (theme: Theme) => ({
     }),
     cell: {
       minHeight: 80,
+      overflow: "hidden",
     },
     daysOfWeek: css({
       width: "100%",
