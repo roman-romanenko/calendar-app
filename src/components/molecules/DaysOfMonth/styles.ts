@@ -5,6 +5,7 @@ export const getDayOfMonthStyles = (theme: Theme) => ({
   flexStyles: {
     row: css({
       display: "flex",
+      justifyContent: "space-around",
       // marginBottom: 4,
     }),
     cell: {

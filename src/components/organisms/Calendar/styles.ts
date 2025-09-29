@@ -13,5 +13,8 @@ export const calendarMenuStyles = (theme: Theme) => {
       borderRadius: theme.borderRadius.md,
       backgroundColor: theme.primary,
     }),
+    container: css({
+      padding: theme.spacing.sm,
+    }),
   };
 };

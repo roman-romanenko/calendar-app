@@ -41,15 +41,14 @@ const CalendarMenu: React.FC = () => {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        marginBottom: 16,
       }}
     >
       <button onClick={prevMonth}>
-        <ChevronLeft />
+        <ChevronLeft color={theme.text} />
       </button>
       <h2>{format(currentMonth, "MMMM yyyy")}</h2>
       <button onClick={nextMonth}>
-        <ChevronRight />
+        <ChevronRight color={theme.text} />
       </button>
     </div>
   );
@@ -76,7 +75,7 @@ const CalendarMenu: React.FC = () => {
   };
 
   return (
-    <div>
+    <div css={styles.container}>
       {renderHeader()}
       <DaysOfWeek />
       <DaysOfMonth

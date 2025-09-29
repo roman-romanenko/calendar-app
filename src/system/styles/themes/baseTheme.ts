@@ -39,7 +39,7 @@ export const baseTheme: BaseTheme = {
       borderRadius: "50%",
     },
     menu: {
-      width: 300,
+      width: 250,
     },
   },
 };
