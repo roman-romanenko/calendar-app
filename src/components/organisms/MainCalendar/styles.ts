@@ -8,6 +8,9 @@ export const calendarStyles = (theme: Theme, isMenuOpen: boolean) => {
       width: "100%",
       paddingLeft: isMenuOpen ? theme.components.menu.width : 0,
       transition: theme.transition,
+      [theme.maxMedia.sm]: {
+        display: "none",
+      },
     }),
     viewSwitcher: css({
       marginBottom: 20,

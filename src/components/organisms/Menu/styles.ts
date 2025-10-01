@@ -15,6 +15,10 @@ export const menuStyles = (theme: Theme, isOpen: boolean) => {
       transform: isOpen ? "translateX(0)" : "translateX(-100%)",
       transition: theme.transition,
       overflow: "hidden",
+      [theme.maxMedia.sm]: {
+        width: "100vw",
+        transform: "translateX(0)",
+      },
     }),
   };
 };

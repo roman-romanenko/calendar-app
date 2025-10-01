@@ -34,6 +34,18 @@ export type ThemeFontSize = {
   xl: "24px";
 };
 
+export type ThemeBreakpoints = {
+  sm: "480px";
+  md: "768px";
+  lg: "1024px";
+  xl: "1200px";
+};
+
+export type ThemeMedia<T extends Record<string, string>> = {
+  minMedia: { [K in keyof T]: `@media (min-width: ${T[K]})` };
+  maxMedia: { [K in keyof T]: `@media (max-width: ${T[K]})` };
+};
+
 export type BaseTheme = {
   spacing: ThemeSpacing;
   borderRadius: ThemeBorderRadius;
@@ -52,7 +64,8 @@ export type BaseTheme = {
       width: number;
     };
   };
-};
+  breakpoints: ThemeBreakpoints;
+} & ThemeMedia<ThemeBreakpoints>;
 export type ThemeMode = "light" | "dark";
 
 export interface Theme extends BaseTheme, EmotionTheme {

@@ -1,4 +1,12 @@
+import { createMediaHelpers } from "../../helpers/helperFunctions";
 import { BaseTheme } from "./types";
+
+const breakpoints = {
+  sm: "480px",
+  md: "768px",
+  lg: "1024px",
+  xl: "1200px",
+} as const;
 
 export const baseTheme: BaseTheme = {
   spacing: {
@@ -42,4 +50,6 @@ export const baseTheme: BaseTheme = {
       width: 250,
     },
   },
+  breakpoints,
+  ...createMediaHelpers(breakpoints),
 };

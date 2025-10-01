@@ -12,6 +12,14 @@ export const headerStyles = (theme: Theme) => {
       background: "transparent",
       padding: "0 24px",
       zIndex: 100,
+      [theme.maxMedia.sm]: {
+        padding: theme.spacing.sm,
+        flexWrap: "wrap",
+        height: "auto",
+        minHeight: "auto",
+        rowGap: 8,
+        width: "100vw",
+      },
     }),
     leftSection: css({
       display: "flex",
@@ -27,6 +35,9 @@ export const headerStyles = (theme: Theme) => {
       transition: "background 0.2s",
       "&:hover": {
         background: theme.background,
+      },
+      [theme.maxMedia.sm]: {
+        display: "none",
       },
     }),
     logoLink: css({
@@ -57,7 +68,9 @@ export const headerStyles = (theme: Theme) => {
       flex: 1,
       justifyContent: "end",
       marginRight: 20,
-      minWidth: 0,
+      [theme.maxMedia.sm]: {
+        display: "none",
+      },
     }),
     rightSection: css({
       display: "flex",
