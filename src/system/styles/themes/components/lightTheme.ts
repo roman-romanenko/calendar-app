@@ -14,5 +14,8 @@ export const lightTheme: Theme = {
     selectedCircle: {
       backgroundColor: "#0b57d0",
     },
+    event: {
+      hoverBackgroundColor: "#dde3ea",
+    },
   },
 };

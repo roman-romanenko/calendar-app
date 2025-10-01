@@ -8,7 +8,7 @@ const Event: React.FC<EventProps> = ({ time, comment }) => {
 
   return (
     <div css={styles.wrapper}>
-      {time} {comment}
+      <span css={styles.text}>{`${time} ${comment}`}</span>
     </div>
   );
 };

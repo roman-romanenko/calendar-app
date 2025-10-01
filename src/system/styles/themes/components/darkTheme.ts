@@ -14,5 +14,8 @@ export const darkTheme: Theme = {
     selectedCircle: {
       backgroundColor: "#a8c7fa",
     },
+    event: {
+      hoverBackgroundColor: "rgba(221, 227, 234, 0.25)",
+    },
   },
 };

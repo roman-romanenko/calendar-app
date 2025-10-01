@@ -67,5 +67,8 @@ export interface Theme extends BaseTheme, EmotionTheme {
     selectedCircle: {
       backgroundColor: string;
     };
+    event: {
+      hoverBackgroundColor: string;
+    };
   };
 }
