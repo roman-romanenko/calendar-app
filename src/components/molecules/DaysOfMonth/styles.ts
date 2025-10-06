@@ -22,6 +22,9 @@ export const getDayOfMonthStyles = (theme: Theme) => ({
       display: "grid",
       gridTemplateColumns: "repeat(7, 1fr)",
       borderBottom: `1px solid ${theme.mainCalendar.border}`,
+      "&:last-child": {
+        borderBottom: "none",
+      },
       "& > *:not(:last-child)": {
         borderRight: `1px solid ${theme.mainCalendar.border}`,
       },

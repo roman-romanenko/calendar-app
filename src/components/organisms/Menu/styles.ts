@@ -16,8 +16,7 @@ export const menuStyles = (theme: Theme, isOpen: boolean) => {
       transition: theme.transition,
       overflow: "hidden",
       [theme.maxMedia.sm]: {
-        width: "100vw",
-        transform: "translateX(0)",
+        display: "none",
       },
     }),
   };

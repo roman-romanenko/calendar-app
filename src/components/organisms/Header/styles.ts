@@ -19,6 +19,7 @@ export const headerStyles = (theme: Theme) => {
         minHeight: "auto",
         rowGap: 8,
         width: "100vw",
+        alignItems: "flex-start",
       },
     }),
     leftSection: css({
