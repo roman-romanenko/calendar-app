@@ -35,3 +35,56 @@ export const monthViewStyles = {
     height: "100%",
   }),
 };
+
+export const weekViewStyles = (theme: Theme) => {
+  return {
+    container: css({
+      display: "flex",
+      flexDirection: "column",
+      height: "100%",
+      paddingLeft: theme.spacing.md,
+      paddingRight: theme.spacing.md,
+    }),
+
+    weekHeader: css({
+      display: "grid",
+      gridTemplateColumns: "60px repeat(7, 1fr)",
+      borderBottom: `1px solid ${theme.mainCalendar.border}`,
+      fontSize: 12,
+      fontWeight: 500,
+    }),
+
+    dayLabel: css({
+      display: "flex",
+      alignItems: "center",
+      flexDirection: "column",
+      padding: "8px 4px",
+      textAlign: "center",
+      position: "relative",
+      "&::before": {
+        content: '""',
+        position: "absolute",
+        left: 0,
+        bottom: 0,
+        width: "1px",
+        height: "24px",
+        backgroundColor: theme.mainCalendar.border,
+      },
+    }),
+
+    weekGrid: css({
+      width: "100%",
+      display: "grid",
+      gridTemplateColumns: "repeat(7, 1fr)",
+    }),
+
+    weekCell: css({
+      borderLeft: `1px solid ${theme.mainCalendar.border}`,
+    }),
+
+    number: css({
+      fontSize: 26,
+      fontWeight: 400,
+    }),
+  };
+};
