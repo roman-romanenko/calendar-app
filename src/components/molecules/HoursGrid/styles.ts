@@ -4,27 +4,35 @@ import { Theme } from "../../../system/styles/themes";
 export const createHoursGridStyles = (theme: Theme) => {
   return {
     gridContainer: css({
-      display: "grid",
-      gridTemplateRows: "repeat(24, 1fr)",
+      display: "flex",
+      flexDirection: "column",
       height: "100%",
       width: "100%",
-      borderLeft: `1px solid ${theme.mainCalendar.border}`,
+      border: `1px solid ${theme.mainCalendar.border}`,
       position: "relative",
     }),
     timeLabelContainer: css({
-      display: "grid",
-      gridTemplateRows: "repeat(24, 1fr)",
-      width: 60,
+      display: "flex",
+      flexDirection: "column",
       fontSize: 12,
-      //   paddingRight: theme.paddingRight,
       textAlign: "right",
       color: theme.text,
       userSelect: "none",
     }),
     rowLine: css({
-      borderTop: `1px solid ${theme.mainCalendar.border}`,
       height: "100%",
       width: "100%",
+      ":not(:first-of-type)": {
+        borderTop: `1px solid ${theme.mainCalendar.border}`,
+      },
+    }),
+    hourLabel: css({
+      width: "60px",
+      height: "100%",
+      paddingRight: theme.spacing.sm,
+    }),
+    hourCss: css({
+      transform: "translateY(-50%)",
     }),
   };
 };
