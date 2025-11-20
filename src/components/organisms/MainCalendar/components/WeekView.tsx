@@ -1,12 +1,19 @@
-import { addDays, format, startOfWeek } from "date-fns";
+import { addDays, addHours, format, isSameDay } from "date-fns";
 import HoursGrid from "../../../molecules/HoursGrid";
 import { useCalendarStore } from "../../../../system/store/calendar";
 import { useAppTheme } from "../../../../system/helpers/hooks";
-import { weekViewStyles } from "../styles";
+import { weekViewStyles, getDayHighlightStyle } from "../styles";
+import Event from "../../../atoms/Event";
+import { v4 as uuidv4 } from "uuid";
 
 const WeekView = () => {
-  const { selectedDate } = useCalendarStore();
-  const start = startOfWeek(selectedDate, { weekStartsOn: 0 });
+  const {
+    selectedDate,
+    currentWeekStart,
+    events: allEvents,
+    openModal,
+  } = useCalendarStore();
+
   const theme = useAppTheme();
   const {
     container: weekViewContainer,
@@ -16,84 +23,77 @@ const WeekView = () => {
     number,
     weekCell,
   } = weekViewStyles(theme);
-  const days = Array.from({ length: 7 }, (_, i) => addDays(start, i));
+  const days = Array.from({ length: 7 }, (_, i) =>
+    addDays(currentWeekStart, i)
+  );
 
   return (
     <div css={weekViewContainer}>
       {/* <div></div> */}
       <div css={weekHeader}>
-        {days.map((day) => (
-          <div css={dayLabel} key={day.toString()}>
-            <div>{format(day, "EE")}</div>
-            <div css={number}>{format(day, "d")}</div>
-          </div>
-        ))}
+        {days.map((day) => {
+          const isSelected = isSameDay(day, selectedDate);
+          const { dayAbbreviation, dayNumber } = getDayHighlightStyle(
+            theme,
+            isSelected
+          );
+          return (
+            <div css={dayLabel} key={day.toString()}>
+              <div css={dayAbbreviation}>{format(day, "EE")}</div>{" "}
+              {/* day of week abbreviation */}
+              <div css={[number, dayNumber]}>{format(day, "d")}</div>
+            </div>
+          );
+        })}
       </div>
 
       {/* Hours grid with columns */}
-      <HoursGrid>
-        <div css={weekGrid}>
-          {days.map((day, idx) => (
-            <div css={weekCell} key={idx}></div>
-          ))}
-        </div>
-      </HoursGrid>
+      <HoursGrid
+        renderHoursGrid={(index) => (
+          <div css={weekGrid}>
+            {days.map((day, idx) => (
+              <div
+                css={weekCell}
+                key={idx}
+                onClick={() => {
+                  console.log("Day index:", { idx, day });
+                  console.log("Hour index:", index);
+                  console.log("Actual Date:", addHours(day, index));
+
+                  console.log(
+                    "events on this day:",
+                    allEvents[format(day, "yyyy-MM-dd")] || []
+                  );
+                  openModal();
+                }}
+              >
+                {allEvents[format(day, "yyyy-MM-dd")]?.map((event) => {
+                  if (event.startTime.split(":")[0] !== String(index)) {
+                    return null;
+                  }
+                  
+                  return (
+                    <div
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openModal(event);
+                      }}
+                      key={uuidv4()}
+                    >
+                      <Event
+                        time={event.startTime}
+                        comment={event.comment || ""}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+        )}
+      />
     </div>
   );
 };
 
 export default WeekView;
-
-// (
-//   <div className="overflow-auto border rounded-2xl shadow-sm max-h-[80vh]">
-//     {/* Header */}
-//     <div className="grid grid-cols-8 bg-gray-100 sticky top-0 z-10">
-//       <div className="p-2 font-semibold text-center border-r bg-gray-200">Time</div>
-//       {days.map((day) => (
-//         <div key={day} className="p-2 font-semibold text-center border-r">
-//           {day}
-//         </div>
-//       ))}
-//     </div>
-
-//     {/* Grid body */}
-//     <div className="relative">
-//       {hours.map((hour) => (
-//         <div key={hour} className="grid grid-cols-8 border-t h-12">
-//           <div className="p-2 text-sm font-medium text-center border-r bg-gray-50">
-//             {`${hour.toString().padStart(2, "0")}:00`}
-//           </div>
-//           {days.map((day) => (
-//             <div key={`${day}-${hour}`} className="border-r relative" />
-//           ))}
-//         </div>
-//       ))}
-
-//       {/* Events Layer */}
-//       <div className="absolute inset-0 pointer-events-none">
-//         {events.map((event) => {
-//           const dayIndex = days.indexOf(event.day);
-//           if (dayIndex === -1) return null;
-
-//           const top = event.startHour * 3; // 3rem per hour (h-12 = 3rem)
-//           const height = event.duration * 3;
-
-//           return (
-//             <div
-//               key={event.id}
-//               className="absolute bg-blue-500 text-white text-sm rounded-xl shadow-md px-2 py-1 pointer-events-auto cursor-pointer hover:bg-blue-600 transition"
-//               style={{
-//                 left: `${(dayIndex + 1) * (100 / 8)}%`,
-//                 width: `${100 / 8}%`,
-//                 top: `${top}rem`,
-//                 height: `${height}rem`,
-//               }}
-//             >
-//               {event.title}
-//             </div>
-//           );
-//         })}
-//       </div>
-//     </div>
-//   </div>
-// );

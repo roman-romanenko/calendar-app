@@ -11,6 +11,7 @@ export interface CalendarEvent {
 export interface CalendarState {
   currentView: CalendarView;
   currentMonth: Date;
+  currentWeekStart: Date;
   selectedDate: Date;
   isModalOpen: boolean;
   events: Record<string, CalendarEvent[]>; // key is date string

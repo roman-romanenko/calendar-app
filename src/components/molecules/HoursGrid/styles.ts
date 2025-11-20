@@ -30,6 +30,7 @@ export const createHoursGridStyles = (theme: Theme) => {
       width: "60px",
       height: "100%",
       paddingRight: theme.spacing.sm,
+      minHeight: theme.components.hoursGrid.minRowHeight,
     }),
     hourCss: css({
       transform: "translateY(-50%)",

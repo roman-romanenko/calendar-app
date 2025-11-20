@@ -1,37 +1,29 @@
 import React from "react";
-import { format, addHours, startOfDay } from "date-fns";
 import { useAppTheme } from "../../../system/helpers/hooks";
 import { createHoursGridStyles } from "./styles";
+import { useHoursGrid } from "./hooks";
 
 interface HoursGridProps {
-  children?: React.ReactNode;
+  renderHoursGrid?: (index: number) => React.ReactNode;
   hours?: number;
 }
 
-const HoursGrid: React.FC<HoursGridProps> = ({ children }) => {
-  const hours = Array.from({ length: 24 }, (_, i) => {
-    const offsetMinutes = -new Date().getTimezoneOffset(); 
-    const sign = offsetMinutes >= 0 ? "+" : "-";
-    const absMinutes = Math.abs(offsetMinutes);
-    const hoursOffset = Math.floor(absMinutes / 60);
-    const minsOffset = absMinutes % 60;
-    // Format as "GMT+1" or "GMT+05:30"
-    const gmtOffset =
-      minsOffset === 0
-        ? `GMT${sign}${hoursOffset}`
-        : `GMT${sign}${String(hoursOffset).padStart(2, "0")}:${String(
-            minsOffset
-          ).padStart(2, "0")}`;
-
-    if (i === 0) return gmtOffset; 
-    return format(addHours(startOfDay(new Date()), i), "h a"); 
-  });
+const HoursGrid: React.FC<HoursGridProps> = ({ renderHoursGrid }) => {
+  const { hours } = useHoursGrid();
   const theme = useAppTheme();
   const { gridContainer, timeLabelContainer, rowLine, hourLabel, hourCss } =
     createHoursGridStyles(theme);
 
   return (
-    <div style={{ display: "flex", height: "100%", width: "100%" }}>
+    <div
+      style={{
+        display: "flex",
+        height: "100%",
+        width: "100%",
+        overflowY: "scroll",
+        overflowX: "hidden",
+      }}
+    >
       {/* Time labels */}
       <div css={timeLabelContainer}>
         {hours.map((hour, i) => (
@@ -45,7 +37,7 @@ const HoursGrid: React.FC<HoursGridProps> = ({ children }) => {
       <div css={gridContainer}>
         {hours.map((_, i) => (
           <div key={i} css={rowLine}>
-            {children}
+            {renderHoursGrid && renderHoursGrid(i)}
           </div>
         ))}
       </div>

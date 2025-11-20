@@ -24,6 +24,7 @@ export const calendarStyles = (theme: Theme, isMenuOpen: boolean) => {
       backgroundColor: theme.mainCalendar.background,
       borderRadius: theme.borderRadius.xxl,
       border: `1px solid ${theme.border}`,
+      transition: theme.transition,
     }),
   };
 };
@@ -33,6 +34,7 @@ export const monthViewStyles = {
     display: "grid",
     width: "100%",
     height: "100%",
+    gridAutoRows: "1fr",
   }),
 };
 
@@ -82,23 +84,47 @@ export const weekViewStyles = (theme: Theme) => {
     }),
 
     weekGrid: css({
-      width: "calc(100% + 1px)",
+      width: "calc(100% + 2px)",
       height: "100%",
-      display: "flex",
+      minHeight: theme.components.hoursGrid.minRowHeight,
+      // display: "flex",
+      display: "grid",
+      gridTemplateColumns: "repeat(7, 1fr)",
     }),
 
     weekCell: css({
       height: "100%",
       width: "100%",
+      overflow: "hidden",
       ":not(:last-of-type)": {
         borderRight: `1px solid ${theme.mainCalendar.border}`,
       },
     }),
 
     number: css({
-      width: "100%",
-      fontSize: 26,
+      height: "36px",
+      width: "36px",
+      lineHeight: "36px",
       fontWeight: 400,
+      borderRadius: "50%",
+      fontSize: theme.fontSize.xl,
+      margin: "0 auto",
+    }),
+  };
+};
+
+export const getDayHighlightStyle = (theme: Theme, isSelected: boolean) => {
+  return {
+    dayNumber: css({
+      backgroundColor: isSelected
+        ? theme.mainCalendar.selectedCircle.backgroundColor
+        : "transparent",
+      color: isSelected ? theme.mainCalendar.background : theme.text,
+    }),
+    dayAbbreviation: css({
+      color: isSelected
+        ? theme.mainCalendar.selectedCircle.backgroundColor
+        : theme.text,
     }),
   };
 };

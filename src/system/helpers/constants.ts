@@ -40,3 +40,5 @@ export const mockEvents = {
     },
   ],
 };
+
+export const startOfWeekOptions = { weekStartsOn: 0 as const }; // Sunday as the first day of the week
