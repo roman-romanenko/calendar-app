@@ -84,12 +84,13 @@ export const weekViewStyles = (theme: Theme) => {
     }),
 
     weekGrid: css({
-      width: "calc(100% + 2px)",
-      height: "100%",
-      minHeight: theme.components.hoursGrid.minRowHeight,
-      // display: "flex",
-      display: "grid",
-      gridTemplateColumns: "repeat(7, 1fr)",
+      flex: 1,
+
+      // height: "100%",
+      minHeight: `${theme.components.hoursGrid.minRowHeight - 1}px`,
+      // display: "grid",
+      // gridTemplateColumns: "repeat(7, 1fr)",
+      display: "flex",
     }),
 
     weekCell: css({

@@ -11,19 +11,17 @@ interface HoursGridProps {
 const HoursGrid: React.FC<HoursGridProps> = ({ renderHoursGrid }) => {
   const { hours } = useHoursGrid();
   const theme = useAppTheme();
-  const { gridContainer, timeLabelContainer, rowLine, hourLabel, hourCss } =
-    createHoursGridStyles(theme);
+  const {
+    hoursContainer,
+    gridContainer,
+    timeLabelContainer,
+    rowLine,
+    hourLabel,
+    hourCss,
+  } = createHoursGridStyles(theme);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        height: "100%",
-        width: "100%",
-        overflowY: "scroll",
-        overflowX: "hidden",
-      }}
-    >
+    <div css={hoursContainer}>
       {/* Time labels */}
       <div css={timeLabelContainer}>
         {hours.map((hour, i) => (

@@ -3,10 +3,19 @@ import { Theme } from "../../../system/styles/themes";
 
 export const createHoursGridStyles = (theme: Theme) => {
   return {
+    hoursContainer: css({
+      display: "flex",
+      height: "100%",
+      width: "100%",
+      overflowY: "scroll",
+      overflowX: "hidden",
+      scrollbarGutter: "stable",
+    }),
     gridContainer: css({
       display: "flex",
       flexDirection: "column",
-      height: "100%",
+      height: "max-content",
+      minHeight: "100%",
       width: "100%",
       border: `1px solid ${theme.mainCalendar.border}`,
       position: "relative",
@@ -21,7 +30,9 @@ export const createHoursGridStyles = (theme: Theme) => {
     }),
     rowLine: css({
       height: "100%",
-      width: "100%",
+      display: "flex",
+      width: "calc(100% + 1px)",
+      flex: 1,
       ":not(:first-of-type)": {
         borderTop: `1px solid ${theme.mainCalendar.border}`,
       },

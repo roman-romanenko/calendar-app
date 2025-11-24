@@ -64,7 +64,7 @@ export type BaseTheme = {
       width: number;
     };
     hoursGrid: {
-      minRowHeight: "35px";
+      minRowHeight: 35;
     };
   };
   breakpoints: ThemeBreakpoints;

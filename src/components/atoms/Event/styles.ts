@@ -11,6 +11,7 @@ export const getEventStyles = (theme: Theme) => ({
     backgroundColor: "transparent",
     padding: theme.spacing.xs,
     gap: theme.spacing.xs,
+    cursor: "pointer",
     "&::before": {
       content: '""',
       flexShrink: 0,

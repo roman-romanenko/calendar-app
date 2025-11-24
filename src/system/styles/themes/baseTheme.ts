@@ -50,7 +50,7 @@ export const baseTheme: BaseTheme = {
       width: 250,
     },
     hoursGrid: {
-      minRowHeight: "35px",
+      minRowHeight: 35,
     },
   },
   breakpoints,

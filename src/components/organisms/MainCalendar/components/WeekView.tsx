@@ -71,7 +71,7 @@ const WeekView = () => {
                   if (event.startTime.split(":")[0] !== String(index)) {
                     return null;
                   }
-                  
+
                   return (
                     <div
                       onClick={(e) => {
