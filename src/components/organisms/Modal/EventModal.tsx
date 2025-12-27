@@ -20,6 +20,13 @@ const EventModal = () => {
     const formattedMinute = minute.toString().padStart(2, "0");
     return `${formattedHour}:${formattedMinute}`;
   };
+
+  // const formatDuration = (minutes: number) => {
+  //   if (minutes < 60) return `${minutes} min`;
+  //   const hours = minutes / 60;
+  //   return hours % 1 === 0 ? `${hours} h` : `${hours.toFixed(1)} h`;
+  // };
+
   const todayDay = new Date();
   const hour = todayDay.getHours();
   const minutes = todayDay.getMinutes();
@@ -42,12 +49,33 @@ const EventModal = () => {
         times.push(formatTime(h, m));
       }
     }
+    console.log("Time options:", times);
 
     return times.map((t) => ({
       label: t,
       value: t,
     }));
   }, []);
+
+  // const timeOptions = useMemo(() => {
+  //   return Array.from({ length: 48 }, (_, i) => {
+  //     const hour = Math.floor(i / 2);
+  //     const minute = i % 2 === 0 ? 0 : 30;
+
+  //     const label = `${String(hour).padStart(2, "0")}:${
+  //       minute === 0 ? "00" : "30"
+  //     }`;
+
+  //     // Create ISO time value based on selectedDate
+  //     const date = new Date(selectedDate);
+  //     date.setHours(hour, minute, 0, 0);
+
+  //     return {
+  //       label,
+  //       value: date.toISOString(),
+  //     };
+  //   });
+  // }, [selectedDate]);
 
   useEffect(() => {
     setStartTime(editingEvent?.startTime || initialStartTime);

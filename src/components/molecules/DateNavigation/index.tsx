@@ -2,8 +2,8 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useAppTheme } from "../../../system/helpers/hooks";
 import { getDateNavigationStyles } from "./styles";
 import {
-  goToPrevMonth,
-  goToNextMonth,
+  goNext,
+  goPrev,
   goToday,
   useCalendarStore,
 } from "../../../system/store";
@@ -18,18 +18,18 @@ const DateNavigation: React.FC = () => {
 
   return (
     <>
-      <div>{monthsOfYear[getMonth(currentMonth)] + " " + currentYear}</div>
       <div css={styles.container}>
-        <button onClick={goToPrevMonth}>
-          <ChevronLeft css={styles.icon} />
-        </button>
         <button css={styles.todayButton} onClick={goToday}>
           Today
         </button>
-        <button onClick={goToNextMonth}>
+        <button onClick={goPrev}>
+          <ChevronLeft css={styles.icon} />
+        </button>
+        <button onClick={goNext}>
           <ChevronRight css={styles.icon} />
         </button>
       </div>
+      <div>{monthsOfYear[getMonth(currentMonth)] + " " + currentYear}</div>
     </>
   );
 };

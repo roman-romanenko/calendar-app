@@ -20,7 +20,6 @@ export const createGlobalStyles = (theme: Theme) =>
       color: theme.text,
       lineHeight: 1.6,
       minHeight: "100vh",
-      transition: "background-color 0.3s ease, color 0.3s ease",
     },
     a: {
       color: theme.primary,

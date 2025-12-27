@@ -49,6 +49,9 @@ export const baseTheme: BaseTheme = {
     menu: {
       width: 250,
     },
+    hoursGrid: {
+      minRowHeight: 35,
+    },
   },
   breakpoints,
   ...createMediaHelpers(breakpoints),

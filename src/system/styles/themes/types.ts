@@ -63,6 +63,9 @@ export type BaseTheme = {
     menu: {
       width: number;
     };
+    hoursGrid: {
+      minRowHeight: 35;
+    };
   };
   breakpoints: ThemeBreakpoints;
 } & ThemeMedia<ThemeBreakpoints>;

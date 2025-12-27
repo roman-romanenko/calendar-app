@@ -1,56 +1,43 @@
 import React from "react";
-import { css } from "@emotion/react";
-import { format, addHours, startOfDay } from "date-fns";
+import { useAppTheme } from "../../../system/helpers/hooks";
+import { createHoursGridStyles } from "./styles";
+import { useHoursGrid } from "./hooks";
 
 interface HoursGridProps {
-  children?: React.ReactNode;
+  renderHoursGrid?: (index: number) => React.ReactNode;
   hours?: number;
 }
 
-const gridContainer = css({
-  display: "grid",
-  gridTemplateRows: "repeat(24, 1fr)",
-  height: "100%",
-  borderLeft: "1px solid #ccc",
-  position: "relative",
-});
-
-const timeLabelContainer = css({
-  display: "grid",
-  gridTemplateRows: "repeat(24, 1fr)",
-  width: 60,
-  fontSize: 12,
-  paddingRight: 8,
-  textAlign: "right",
-  color: "#666",
-  userSelect: "none",
-});
-
-const rowLine = css({
-  borderTop: "1px solid #eee",
-  height: "100%",
-});
-
-const HoursGrid: React.FC<HoursGridProps> = ({ children }) => {
-  const hours = Array.from({ length: 24 }, (_, i) =>
-    format(addHours(startOfDay(new Date()), i), "HH:mm")
-  );
+const HoursGrid: React.FC<HoursGridProps> = ({ renderHoursGrid }) => {
+  const { hours } = useHoursGrid();
+  const theme = useAppTheme();
+  const {
+    hoursContainer,
+    gridContainer,
+    timeLabelContainer,
+    rowLine,
+    hourLabel,
+    hourCss,
+  } = createHoursGridStyles(theme);
 
   return (
-    <div style={{ display: "flex", height: "100%" }}>
+    <div css={hoursContainer}>
       {/* Time labels */}
       <div css={timeLabelContainer}>
         {hours.map((hour, i) => (
-          <div key={i}>{hour}</div>
+          <div key={i} css={hourLabel}>
+            <div css={hourCss}>{hour}</div>
+          </div>
         ))}
       </div>
 
       {/* Grid lines + children overlay (events, day columns) */}
       <div css={gridContainer}>
         {hours.map((_, i) => (
-          <div key={i} css={rowLine}></div>
+          <div key={i} css={rowLine}>
+            {renderHoursGrid && renderHoursGrid(i)}
+          </div>
         ))}
-        {children}
       </div>
     </div>
   );

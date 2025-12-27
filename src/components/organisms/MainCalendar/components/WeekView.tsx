@@ -1,71 +1,97 @@
-import React from "react";
-import { addDays, format, startOfWeek } from "date-fns";
-import { css } from "@emotion/react";
+import { addDays, addHours, format, isSameDay } from "date-fns";
 import HoursGrid from "../../../molecules/HoursGrid";
 import { useCalendarStore } from "../../../../system/store/calendar";
-
-const weekViewContainer = css({
-  display: "flex",
-  flexDirection: "column",
-  height: "100%",
-});
-
-const weekHeader = css({
-  display: "grid",
-  gridTemplateColumns: "60px repeat(7, 1fr)", // 60px for time labels
-  borderBottom: "1px solid #ddd",
-  backgroundColor: "#f9f9f9",
-  fontSize: 12,
-  fontWeight: 500,
-});
-
-const dayLabel = css({
-  padding: "8px 4px",
-  textAlign: "center",
-  borderLeft: "1px solid #ddd",
-});
-
-const weekGrid = css({
-  display: "grid",
-  gridTemplateColumns: "repeat(7, 1fr)",
-  position: "absolute",
-  top: 0,
-  left: 60, // align after time column
-  right: 0,
-  bottom: 0,
-  pointerEvents: "none",
-});
+import { useAppTheme } from "../../../../system/helpers/hooks";
+import { weekViewStyles, getDayHighlightStyle } from "../styles";
+import Event from "../../../atoms/Event";
+import { v4 as uuidv4 } from "uuid";
 
 const WeekView = () => {
-  const { selectedDate } = useCalendarStore();
-  const start = startOfWeek(selectedDate, { weekStartsOn: 1 });
+  const {
+    selectedDate,
+    currentWeekStart,
+    events: allEvents,
+    openModal,
+  } = useCalendarStore();
 
-  const days = Array.from({ length: 7 }, (_, i) => addDays(start, i));
+  const theme = useAppTheme();
+  const {
+    container: weekViewContainer,
+    weekHeader,
+    dayLabel,
+    weekGrid,
+    number,
+    weekCell,
+  } = weekViewStyles(theme);
+  const days = Array.from({ length: 7 }, (_, i) =>
+    addDays(currentWeekStart, i)
+  );
 
   return (
     <div css={weekViewContainer}>
-      {/* Top labels */}
+      {/* <div></div> */}
       <div css={weekHeader}>
-        <div /> {/* Empty for time column */}
-        {days.map((day) => (
-          <div css={dayLabel} key={day.toString()}>
-            {format(day, "EEE dd")}
-          </div>
-        ))}
+        {days.map((day) => {
+          const isSelected = isSameDay(day, selectedDate);
+          const { dayAbbreviation, dayNumber } = getDayHighlightStyle(
+            theme,
+            isSelected
+          );
+          return (
+            <div css={dayLabel} key={day.toString()}>
+              <div css={dayAbbreviation}>{format(day, "EE")}</div>{" "}
+              {/* day of week abbreviation */}
+              <div css={[number, dayNumber]}>{format(day, "d")}</div>
+            </div>
+          );
+        })}
       </div>
 
       {/* Hours grid with columns */}
-      <HoursGrid>
-        {/* Placeholder for event blocks per day */}
-        <div css={weekGrid}>
-          {days.map((day, idx) => (
-            <div
-              key={idx}
-              style={{ borderLeft: "1px solid #eee", height: "100%" }}
-            />
-          ))}
-        </div>
-      </HoursGrid>
+      <HoursGrid
+        renderHoursGrid={(index) => (
+          <div css={weekGrid}>
+            {days.map((day, idx) => (
+              <div
+                css={weekCell}
+                key={idx}
+                onClick={() => {
+                  console.log("Day index:", { idx, day });
+                  console.log("Hour index:", index);
+                  console.log("Actual Date:", addHours(day, index));
+
+                  console.log(
+                    "events on this day:",
+                    allEvents[format(day, "yyyy-MM-dd")] || []
+                  );
+                  openModal();
+                }}
+              >
+                {allEvents[format(day, "yyyy-MM-dd")]?.map((event) => {
+                  if (event.startTime.split(":")[0] !== String(index)) {
+                    return null;
+                  }
+
+                  return (
+                    <div
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openModal(event);
+                      }}
+                      key={uuidv4()}
+                    >
+                      <Event
+                        time={event.startTime}
+                        comment={event.comment || ""}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+        )}
+      />
     </div>
   );
 };

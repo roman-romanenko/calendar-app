@@ -33,7 +33,6 @@ export const headerStyles = (theme: Theme) => {
       borderRadius: "50%",
       cursor: "pointer",
       color: theme.text,
-      transition: "background 0.2s",
       "&:hover": {
         background: theme.background,
       },

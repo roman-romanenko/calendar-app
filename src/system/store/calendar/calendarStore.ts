@@ -1,17 +1,20 @@
 import { create } from "zustand";
-import { format, startOfMonth } from "date-fns";
+import { format, startOfMonth, startOfWeek } from "date-fns";
 import { CalendarEvent, CalendarState } from "./types";
-import { mockEvents } from "../../helpers/constants";
+import { mockEvents, startOfWeekOptions } from "../../helpers/constants";
+import { v4 as uuidv4 } from "uuid";
 
 export const useCalendarStore = create<CalendarState>((set, get) => ({
   currentView: "month",
-  currentMonth: startOfMonth(new Date()),
   selectedDate: new Date(),
+  currentMonth: startOfMonth(new Date()),
+  currentWeekStart: startOfWeek(new Date(), startOfWeekOptions),
   isModalOpen: false,
   events: mockEvents,
   editingEvent: null,
 
   setSelectedDate: (date) => set({ selectedDate: date }),
+
   openModal: (event) => set({ isModalOpen: true, editingEvent: event || null }),
   closeModal: () => set({ isModalOpen: false, editingEvent: null }),
   setView: (view) => set({ currentView: view }),
@@ -29,7 +32,7 @@ export const useCalendarStore = create<CalendarState>((set, get) => ({
     } else {
       const newEvent: CalendarEvent = {
         ...eventData,
-        id: crypto.randomUUID(),
+        id: uuidv4(),
       };
       updatedEvents = [...existingEvents, newEvent];
     }
